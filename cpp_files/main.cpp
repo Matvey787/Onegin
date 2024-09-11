@@ -48,9 +48,8 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile){
     ssize_t readedChars = 0;
     size_t memForPointers = startMemForPointers;
     size_t readedStrings = 0;
-    //
-    int i = 0;
-    while ((i++ != 5) && (readedChars = getline(&buffer, &len, rFile)) != EOF ){
+    
+    while ((readedChars = getline(&buffer, &len, rFile)) != EOF ){
         ++readedStrings;
         //printf("%s\n", buffer);
         if (readedStrings * sizeof(char*) >  memForPointers){
