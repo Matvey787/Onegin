@@ -42,7 +42,7 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile){
     assert(rFile != NULL);
     // FIXME assert
     // FIXME ded flags
-    char** stringArr = *stringArray;
+    //char** stringArr = stringArray;
     char* buffer = NULL;
     size_t len = 0;
     ssize_t readedChars = 0;
@@ -54,15 +54,15 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile){
         //printf("%s\n", buffer);
         if (readedStrings * sizeof(char*) >  memForPointers){
             memForPointers = memForPointers*4;
-            stringArr = (char**)realloc(stringArr, memForPointers);
+            *stringArray = (char**)realloc(*stringArray, memForPointers);
         }
-        stringArr[readedStrings-1] = (char*)realloc(stringArr[readedStrings-1], readedChars*sizeof(char) - 1);
+        (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
 
         for (int i = 0; i < readedChars - 1; i++)
-            stringArr[readedStrings-1][i] = buffer[i];
+            (*stringArray)[readedStrings-1][i] = buffer[i];
             
-        stringArr[readedStrings-1][readedChars - 1] = '\0';
-        printf("%s %d\n", stringArr[readedStrings-1], (int)readedStrings);
+        (*stringArray)[readedStrings-1][readedChars - 1] = '\0';
+        printf("%s %d\n", (*stringArray)[readedStrings-1], (int)readedStrings);
     }
     printf("ok2");
     *size = readedStrings;
