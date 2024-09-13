@@ -8,7 +8,7 @@ void sortStrings(char** stringArray, size_t size);
 int needToSwap(char* firstStr, char* secondStr);
 void printArray(char** stringArray, size_t size);
 int my_strcmp(char* firstStr, char* secondStr);
-void getStrings(char*** stringArray, size_t* size, FILE* rFile);
+void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correctOrder);
 
 const int startMemForPointers = 8;
 
@@ -22,27 +22,25 @@ int main(){
     const char* filename = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt";
     FILE* rFile = fopen(filename, "r");
 
-    s_text text = {(char**)calloc(1, startMemForPointers), 0};
+    //s_text text = {(char**)calloc(1, startMemForPointers), 0};
 
 
     char** stringArray = (char**)calloc(1, startMemForPointers);
     size_t readedStrings = 0;
+    int64_t correctOrder[100] = {};
 
-    getStrings(&stringArray, &readedStrings, rFile);
-    //printf("%s", stringArray[0]);
+    getStrings(&stringArray, &readedStrings, rFile, correctOrder);
+
     sortStrings(stringArray, readedStrings);
     printArray(stringArray, readedStrings);
-    fclose(rFile);
     return 0;
 }
 
-void getStrings(char*** stringArray, size_t* size, FILE* rFile){
+void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correctOrder){
     assert(*stringArray != NULL);
     assert(size != NULL);
     assert(rFile != NULL);
-    // FIXME assert
-    // FIXME ded flags
-    //char** stringArr = stringArray;
+
     char* buffer = NULL;
     size_t len = 0;
     ssize_t readedChars = 0;
@@ -51,21 +49,21 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile){
     
     while ((readedChars = getline(&buffer, &len, rFile)) != EOF ){
         ++readedStrings;
-        //printf("%s\n", buffer);
         if (readedStrings * sizeof(char*) >  memForPointers){
             memForPointers = memForPointers*4;
             *stringArray = (char**)realloc(*stringArray, memForPointers);
         }
         (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
+        
+        *correctOrder = (int64_t)(*stringArray)[readedStrings-1];
 
         for (int i = 0; i < readedChars - 1; i++)
             (*stringArray)[readedStrings-1][i] = buffer[i];
             
         (*stringArray)[readedStrings-1][readedChars - 1] = '\0';
-        printf("%s %d\n", (*stringArray)[readedStrings-1], (int)readedStrings);
     }
-    printf("ok2");
     *size = readedStrings;
+    fclose(rFile);
 }
 
 void sortStrings(char** stringArray, size_t size){
