@@ -9,6 +9,8 @@ int needToSwap(char* firstStr, char* secondStr);
 void printArray(char** stringArray, size_t size);
 int my_strcmp(char* firstStr, char* secondStr);
 void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correctOrder);
+void printOneDemArray(int64_t* array, int size);
+void writeRepairedText(char** stringArray, FILE* file, size_t size);
 
 const int startMemForPointers = 8;
 
@@ -19,9 +21,11 @@ struct s_text {
 
 int main(){
 
-    const char* filename = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt";
-    FILE* rFile = fopen(filename, "r");
-
+    const char* textFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt";
+    const char* repairedTextFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt";
+    
+    FILE* rFile = fopen(textFileName, "rb");
+    FILE* wFile = fopen(repairedTextFileName, "w");
     //s_text text = {(char**)calloc(1, startMemForPointers), 0};
 
 
@@ -31,8 +35,16 @@ int main(){
 
     getStrings(&stringArray, &readedStrings, rFile, correctOrder);
 
+    printOneDemArray(correctOrder, 100);
+
     sortStrings(stringArray, readedStrings);
     printArray(stringArray, readedStrings);
+
+    printf("Correct order:\n");
+    printArray((char**)correctOrder, readedStrings);
+
+    writeRepairedText((char**)correctOrder, wFile, readedStrings);
+
     return 0;
 }
 
@@ -55,7 +67,7 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correct
         }
         (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
         
-        *correctOrder = (int64_t)(*stringArray)[readedStrings-1];
+        correctOrder[readedStrings-1] = (int64_t)(*stringArray)[readedStrings-1];
 
         for (int i = 0; i < readedChars - 1; i++)
             (*stringArray)[readedStrings-1][i] = buffer[i];
@@ -91,6 +103,12 @@ void printArray(char** stringArray, size_t size){
     }
 }
 
+void printOneDemArray(int64_t* array, int size){
+    int i = 0;
+    while (array[i] && (i < size)) {printf("%ld ", array[i]); i++;};
+    printf("\n");
+}
+
 int my_strcmp(char* firstStr, char* secondStr){
 
     int firstStrEmpty = 0;
@@ -111,4 +129,12 @@ int my_strcmp(char* firstStr, char* secondStr){
 
     }
     return 0;
+}
+
+void writeRepairedText(char** stringArray, FILE* file, size_t size){
+    for (size_t i = 0; i<size; i++){
+        fputs(stringArray[i], file);
+        fputs("\n", file);
+    }   
+    fclose(file);
 }
