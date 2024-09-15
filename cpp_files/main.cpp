@@ -25,11 +25,11 @@ int main(){
     const char* repairedTextFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt";
     
     FILE* rFile = fopen(textFileName, "rb");
-    FILE* wFile = fopen(repairedTextFileName, "w");
+    FILE* wFile = fopen(repairedTextFileName, "w"); // FIXME check
     //s_text text = {(char**)calloc(1, startMemForPointers), 0};
 
 
-    char** stringArray = (char**)calloc(1, startMemForPointers);
+    char** stringArray = (char**)calloc(1, startMemForPointers); // FIXME check
     size_t readedStrings = 0;
     int64_t correctOrder[100] = {};
 
@@ -60,10 +60,10 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correct
     size_t readedStrings = 0;
     
     while ((readedChars = getline(&buffer, &len, rFile)) != EOF ){
-        ++readedStrings;
-        if (readedStrings * sizeof(char*) >  memForPointers){
+
+        if (++readedStrings * sizeof(char*) >  memForPointers){
             memForPointers = memForPointers*4;
-            *stringArray = (char**)realloc(*stringArray, memForPointers);
+            *stringArray = (char**)realloc(*stringArray, memForPointers); // FIXME check
         }
         (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
         
@@ -111,18 +111,13 @@ void printOneDemArray(int64_t* array, int size){
 
 int my_strcmp(char* firstStr, char* secondStr){
 
-    int firstStrEmpty = 0;
-    int secondStrEmpty = 0;
-
-    for (int i = 0, j = 0; !firstStrEmpty && !secondStrEmpty; i++, j++){
+    for (int i = 0, j = 0; firstStr[i] != '\0' && secondStr[j] != '\0'; i++, j++){
         
         // first str
         if (!isalpha(firstStr[i]) && firstStr[i] != '\0') { ++i; --j; continue; };
-        if (firstStr[i] == '\0') {firstStrEmpty = 1;}
 
         // second str
         if (!isalpha(secondStr[j]) && secondStr[j] != '\0') { --i; ++j; continue; };
-        if (secondStr[j] == '\0') {secondStrEmpty = 1;}
 
         // if everithing is fine
         if (tolower(firstStr[i]) != tolower(secondStr[j])) return tolower(firstStr[i]) - tolower(secondStr[j]);
