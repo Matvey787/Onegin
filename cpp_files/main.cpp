@@ -21,7 +21,10 @@ struct s_text {
 
 int main(){
 
+    // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
     const char* textFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt";
+
+    // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt 
     const char* repairedTextFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt";
     
     FILE* rFile = fopen(textFileName, "rb");
