@@ -8,7 +8,7 @@ void sortStrings(char** stringArray, size_t size);
 int needToSwap(char* firstStr, char* secondStr);
 void printArray(char** stringArray, size_t size);
 int my_strcmp(char* firstStr, char* secondStr);
-void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correctOrder);
+void getStrings(char*** stringArray, size_t* size, FILE* rFile, char** correctOrder);
 void printOneDemArray(int64_t* array, int size);
 void writeRepairedText(char** stringArray, FILE* file, size_t size);
 
@@ -25,17 +25,21 @@ int main(){
     const char* repairedTextFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt";
     
     FILE* rFile = fopen(textFileName, "rb");
-    FILE* wFile = fopen(repairedTextFileName, "w"); // FIXME check
+    FILE* wFile = fopen(repairedTextFileName, "w");
+    assert(rFile != NULL && "can't open read_File");
+    assert(wFile != NULL && "can't open write_File");
     //s_text text = {(char**)calloc(1, startMemForPointers), 0};
 
 
-    char** stringArray = (char**)calloc(1, startMemForPointers); // FIXME check
+    char** stringArray = (char**)calloc(1, startMemForPointers);
+    assert(wFile != NULL && "can't allocate memory");
+
     size_t readedStrings = 0;
-    int64_t correctOrder[100] = {};
+    char* correctOrder[100] = {};
 
     getStrings(&stringArray, &readedStrings, rFile, correctOrder);
 
-    printOneDemArray(correctOrder, 100);
+    printOneDemArray((int64_t*)correctOrder, 100);
 
     sortStrings(stringArray, readedStrings);
     printArray(stringArray, readedStrings);
@@ -48,7 +52,7 @@ int main(){
     return 0;
 }
 
-void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correctOrder){
+void getStrings(char*** stringArray, size_t* size, FILE* rFile, char** correctOrder){
     assert(*stringArray != NULL);
     assert(size != NULL);
     assert(rFile != NULL);
@@ -67,7 +71,7 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile, int64_t* correct
         }
         (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
         
-        correctOrder[readedStrings-1] = (int64_t)(*stringArray)[readedStrings-1];
+        correctOrder[readedStrings-1] = (*stringArray)[readedStrings-1];
 
         for (int i = 0; i < readedChars - 1; i++)
             (*stringArray)[readedStrings-1][i] = buffer[i];
