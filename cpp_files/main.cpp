@@ -67,7 +67,8 @@ void getStrings(char*** stringArray, size_t* size, FILE* rFile, char** correctOr
 
         if (++readedStrings * sizeof(char*) >  memForPointers){
             memForPointers = memForPointers*4;
-            *stringArray = (char**)realloc(*stringArray, memForPointers); // FIXME check
+            *stringArray = (char**)realloc(*stringArray, memForPointers);
+            assert(*stringArray != NULL && "fatal realloc");
         }
         (*stringArray)[readedStrings-1] = (char*)realloc((*stringArray)[readedStrings-1], readedChars*sizeof(char) - 1);
         
