@@ -35,28 +35,27 @@ int main(){
     assert(typeStruct_FTSH != NULL);
     assert(typeStruct_FTEH != NULL);
 
+    //------------------------work with files-------------------------------
 
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
     const char* textFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt";
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt 
     const char* repairedTextFileName = "/home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt";
-    
     FILE* rFile = fopen(textFileName, "rb");
     FILE* wFile = fopen(repairedTextFileName, "w");
-
     assert(rFile != NULL && "can't open read_File");
     assert(wFile != NULL && "can't open write_File");
     assert(wFile != NULL && "can't allocate memory");
 
-    size_t readedStrings = getNumberOfStrings(rFile);
+    //------------------create array for strings-----------------------------------
 
+    size_t readedStrings = getNumberOfStrings(rFile);
     s_string* stringArray = (s_string*)calloc(readedStrings, sizeof(s_string));
     assert(stringArray != NULL && "fatal realloc");
-
-    char** correctOrder = (char**)calloc(readedStrings, sizeof(char*));
-
+    char** correctOrder = (char**)calloc(readedStrings, sizeof(char*)); // array for saving correct order
 
 
+    //-------------------work with array----------------------------------------
     getStrings(stringArray, &readedStrings, rFile, correctOrder);
     printArrayOfStructs(stringArray, readedStrings);
 
@@ -65,7 +64,7 @@ int main(){
 
     printArrayOfStructs(stringArray, readedStrings);
     writeRepairedText((char**)correctOrder, wFile, readedStrings);
-
+    
     free(stringArray);
     return 0;
 }
