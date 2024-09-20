@@ -43,8 +43,6 @@ int my_strcmp(void* firstStr, void* secondStr){
 }
 
 int my_strcmp2(void* firstStr, void* secondStr){
-    //printf("%s %s\n", ((s_string*)firstStr)->stringArray, ((s_string*)secondStr)->stringArray);
-    //return strcmp(((s_string*)firstStr)->stringArray, ((s_string*)secondStr)->stringArray) > 0 ? 1 : 0;
 
      for (size_t i = ((s_string*)firstStr) ->lenOfStr, j = ((s_string*)secondStr)->lenOfStr; i > 0 && j > 0; i--, j--){
         

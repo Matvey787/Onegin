@@ -26,14 +26,14 @@ int main(){
     t_compIntFunc typeInt = compareIntTypes;
     t_compDblFunc typeDbl = compareDoubleTypes;
     t_compStrFunc typeStr = compareStringTypes;
-    t_compStructs typeStruct_FTS = my_strcmp; // from the start
-    t_compStructs typeStruct_FTE = my_strcmp; // from the end
+    t_compStructs typeStruct_FTSH = my_strcmp; // from the start (higer -> lower)
+    t_compStructs typeStruct_FTEH = my_strcmp2; // from the end (higer -> lower)
 
     assert(typeInt != NULL);
     assert(typeDbl != NULL);
     assert(typeStr != NULL);
-    assert(typeStruct_FTS != NULL);
-    assert(typeStruct_FTE != NULL);
+    assert(typeStruct_FTSH != NULL);
+    assert(typeStruct_FTEH != NULL);
 
 
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
@@ -61,7 +61,7 @@ int main(){
     printArrayOfStructs(stringArray, readedStrings);
 
     //sortStrings(stringArray2, readedStrings); // another type of sort
-    quickSort(stringArray, 0, readedStrings-1, sizeof(s_string), typeStruct_FTS); // quick sort
+    quickSort(stringArray, 0, readedStrings-1, sizeof(s_string), typeStruct_FTSH); // quick sort
 
     printArrayOfStructs(stringArray, readedStrings);
     writeRepairedText((char**)correctOrder, wFile, readedStrings);
