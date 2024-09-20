@@ -15,18 +15,25 @@ static void mySwap(void* a, void* b, size_t elemMemory);
 
 void quickSort(void* data, long int left, long int right, size_t sizeOftype, int (*compareFunc)(void*, void*)){
     assert(data != NULL);
-    if (left > right) return;
+
+    if (left > right)
+        return;
+
     long int pivot = (left+right)/2;
     long int i = left;
     long int j = right;
+
     while (i <= j){
-        while (compareFunc((char*)data + i*sizeOftype, (char*)data + pivot*sizeOftype)) i++;
-        while (!compareFunc((char*)data + j*sizeOftype, (char*)data + pivot*sizeOftype) && (j != pivot)) j--;
+        while (compareFunc((char*)data + (size_t)i*sizeOftype, (char*)data + (size_t)pivot*sizeOftype)) i++;
+
+        while (!compareFunc((char*)data + (size_t)j*sizeOftype, (char*)data + (size_t)pivot*sizeOftype) && (j != pivot)) j--;
+
         if (i <= j){
-            mySwap((char*)data + i*sizeOftype, (char*)data + j*sizeOftype, sizeOftype);
+            mySwap((char*)data + (size_t)i*sizeOftype, (char*)data + (size_t)j*sizeOftype, sizeOftype);
             i++;
             j--;
         }
+
     }
     quickSort(data, left, j, sizeOftype, compareFunc);
     quickSort(data, i, right, sizeOftype, compareFunc);
