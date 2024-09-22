@@ -37,16 +37,10 @@ int main(){
     assert(typeStruct_FTSH != NULL);
     assert(typeStruct_FTEH != NULL);
 
-    //------------------------work with files-------------------------------
+    //------------------------files-------------------------------
 /* 
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
-    const char* textFileName = "txt_files/text.txt";
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt 
-    const char* repairedTextFileName = "txt_files/repairedText.txt";
-    FILE* rFile = fopen(textFileName, "rb");
-    FILE* wFile = fopen(repairedTextFileName, "w");
-    if (rFile == NULL){printf("can't open read_File\n"); return 1; }
-    if (wFile == NULL){printf("can't open write_File\n"); return 1; } */
     
 
     //------------------create array for strings-----------------------------------
