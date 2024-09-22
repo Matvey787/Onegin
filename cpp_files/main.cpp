@@ -18,18 +18,14 @@ void printArrayOfStructs(s_string* array, size_t size);
 
 size_t getNumberOfStrings(FILE* rFile);
 
-
-typedef int(* t_compIntFunc)( void* a,  void* b);
-typedef int(* t_compDblFunc)( void* a,  void* b);
-typedef int(* t_compStrFunc)( void* a,  void* b);
-typedef int(* t_compStructs)( void* a,  void* b);
+typedef int(* t_comparatorFunc)( void* a,  void* b);
 
 int main(){
-    t_compIntFunc typeInt = compareIntTypes;
-    t_compDblFunc typeDbl = compareDoubleTypes;
-    t_compStrFunc typeStr = compareStringTypes;
-    t_compStructs typeStruct_FTSH = my_strcmp; // from the start (higer -> lower)
-    t_compStructs typeStruct_FTEH = my_strcmp2; // from the end (higer -> lower)
+    t_comparatorFunc typeInt = compareIntTypes;
+    t_comparatorFunc typeDbl = compareDoubleTypes;
+    t_comparatorFunc typeStr = compareStringTypes;
+    t_comparatorFunc typeStruct_FTSH = my_strcmp; // from the start (higer -> lower)
+    t_comparatorFunc typeStruct_FTEH = my_strcmp2; // from the end (higer -> lower)
 
     assert(typeInt != NULL);
     assert(typeDbl != NULL);
