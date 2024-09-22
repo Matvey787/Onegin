@@ -38,7 +38,7 @@ int main(){
     assert(typeStruct_FTEH != NULL);
 
     //------------------------files-------------------------------
-/* 
+
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt 
     
