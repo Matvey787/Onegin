@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 struct s_string {
-    char* stringArray;
-    size_t lenOfStr;
+    char* string;
+    size_t length;
 };
 
 #endif

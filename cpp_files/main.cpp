@@ -8,7 +8,9 @@
 #include "../h_files/structs.h"
 #include "../h_files/comparators.h"
 #include "../h_files/qSort.h"
-
+#include "../h_files/getFileStrings.h"
+#include "../h_files/fillArrayOfStrings.h"
+#include "../h_files/writeStringsToFile.h"
 
 void writeRepairedText(char** stringArray, FILE* file, size_t size);
 void getStrings(s_string* stringArray, size_t* size, FILE* rFile, char** correctOrder);
@@ -36,7 +38,7 @@ int main(){
     assert(typeStruct_FTEH != NULL);
 
     //------------------------work with files-------------------------------
-
+/* 
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/text.txt 
     const char* textFileName = "txt_files/text.txt";
     // LINK /home/matvey/Рабочий стол/C/sortStrings/txt_files/repairedText.txt 
@@ -44,99 +46,51 @@ int main(){
     FILE* rFile = fopen(textFileName, "rb");
     FILE* wFile = fopen(repairedTextFileName, "w");
     if (rFile == NULL){printf("can't open read_File\n"); return 1; }
-    if (wFile == NULL){printf("can't open write_File\n"); return 1; }
+    if (wFile == NULL){printf("can't open write_File\n"); return 1; } */
     
 
     //------------------create array for strings-----------------------------------
+    char* buffer = NULL;
+    size_t readedStrings = getFileStrings(&buffer, "txt_files/text.txt"); // get all strings from file
 
-    size_t readedStrings = getNumberOfStrings(rFile);
-    s_string* stringArray = (s_string*)calloc(readedStrings, sizeof(s_string));
-    assert(stringArray != NULL && "fatal realloc");
-    char** correctOrder = (char**)calloc(readedStrings, sizeof(char*)); // array for saving correct order
+    
+    s_string* stringArray = NULL;
+
+    fillArraysInStruct(&stringArray, buffer, readedStrings);
+
     if (stringArray == NULL){printf("can't allocate memory\n"); return 1; }
+
+
+    char** correctOrder = NULL; // array for saving correct order of strings
+    fillArrayOfPointers(&correctOrder, buffer, readedStrings); // save correct order by pointers
+
     if (correctOrder == NULL){printf("can't allocate memory\n"); return 1; }
 
 
     //-------------------work with array----------------------------------------
 
-    getStrings(stringArray, &readedStrings, rFile, correctOrder);
     printArrayOfStructs(stringArray, readedStrings);
 
-    //sortStrings(stringArray2, readedStrings); // another type of sort
     quickSort(stringArray, 0, (long int)readedStrings-1, sizeof(s_string), typeStruct_FTSH); // quick sort
 
     printArrayOfStructs(stringArray, readedStrings);
-    writeRepairedText((char**)correctOrder, wFile, readedStrings);
-    
-    for (size_t i = 0; i < readedStrings; i++)
-        free(stringArray[i].stringArray);
+
+    writeRepairedText(correctOrder, readedStrings, "txt_files/repairedText.txt");
+
     free(stringArray);
     free(correctOrder);
-
+    free(buffer);
     return 0;
 }
 
-void getStrings(s_string* stringArray, size_t* size, FILE* rFile, char** correctOrder){
-    assert(stringArray != NULL);
-    assert(size != NULL);
-    assert(rFile != NULL);
-
-    char* buffer = NULL;
-    size_t len = 0;
-    ssize_t readedChars = 0;
-    size_t readedStrings = 0;
-    
-    while ((readedChars = getline(&buffer, &len, rFile)) != EOF ){
-        ++readedStrings;
-        stringArray[readedStrings-1].stringArray = (char*)realloc(stringArray[readedStrings-1].stringArray, (long unsigned int)readedChars*sizeof(char));
-        
-        correctOrder[readedStrings-1] = stringArray[readedStrings-1].stringArray;
-
-        for (int i = 0; i < readedChars - 1; i++)
-            stringArray[readedStrings-1].stringArray[i] = buffer[i];
-            
-        stringArray[readedStrings-1].stringArray[readedChars - 1] = '\0';
-        stringArray[readedStrings-1].lenOfStr = (long unsigned int)readedChars - 1;
-    }
-    *size = readedStrings;
-    free(buffer);
-    fclose(rFile);
-}
-
-size_t getNumberOfStrings(FILE* rFile){
-    size_t numberOfStrings = 0;
-    fseek(rFile, 0, SEEK_END);
-
-    size_t size = (size_t)ftell(rFile);
-    char* text = (char*)calloc((size_t)ftell(rFile), sizeof(char));
-    
-    fseek(rFile, 0, SEEK_SET);
-    fread(text, sizeof(char), size, rFile);
-    
-    for (size_t i = 0; i<size; i++){
-        if (text[i] == '\n') ++numberOfStrings;
-    }
-    
-    fseek(rFile, 0, SEEK_SET);
-    free(text);
-    
-    return numberOfStrings;
-}
 
 void printArrayOfStructs(s_string* array, size_t size){
     printf("----------\n");
     for (size_t i = 0; i < size; i++)
-        printf("string: %s len: %ld\n", array[i].stringArray, (long int)array[i].lenOfStr);\
+        printf("string: %s len: %ld\n", array[i].string, (long int)array[i].length);\
     printf("----------\n");
 }
 
-void writeRepairedText(char** stringArray, FILE* file, size_t size){
-    for (size_t i = 0; i<size; i++){
-        fputs(stringArray[i], file);
-        fputs("\n", file);
-    }   
-    fclose(file);
-}
 
 //  another type of sort (view mySwap in project)
 

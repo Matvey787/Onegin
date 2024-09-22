@@ -30,17 +30,17 @@ int my_strcmp(void* firstStr, void* secondStr){
     s_string* str1 = (s_string*)firstStr;
     s_string* str2 = (s_string*)secondStr;
 
-    for (int i = 0, j = 0; (str1->stringArray)[i] != '\0' && (str2->stringArray)[j] != '\0'; i++, j++){
+    for (int i = 0, j = 0; (str1->string)[i] != '\0' && (str2->string)[j] != '\0'; i++, j++){
 
         // first str
-        if (!isalpha((str1->stringArray)[i]) && (str1->stringArray)[i] != '\0') { ++i; --j; continue; };
+        if (!isalpha((str1->string)[i]) && (str1->string)[i] != '\0') { ++i; --j; continue; };
 
         // second str
-        if (!isalpha((str2->stringArray)[j]) && (str2->stringArray)[j] != '\0') { --i; ++j; continue; };
+        if (!isalpha((str2->string)[j]) && (str2->string)[j] != '\0') { --i; ++j; continue; };
 
         // if everithing is fine
-        if (tolower(str1->stringArray[i]) != tolower(str2->stringArray[j])) 
-            return (tolower(str1->stringArray[i]) - tolower(str2->stringArray[j])) > 0 ? 0 : 1;
+        if (tolower(str1->string[i]) != tolower(str2->string[j])) 
+            return (tolower(str1->string[i]) - tolower(str2->string[j])) > 0 ? 0 : 1;
 
     }
     return 0;
@@ -51,18 +51,18 @@ int my_strcmp2(void* firstStr, void* secondStr){
     s_string* str1 = (s_string*)firstStr;
     s_string* str2 = (s_string*)secondStr;
 
-     for (size_t i = str1->lenOfStr, j = str2->lenOfStr; i > 0 && j > 0; i--, j--){
+     for (size_t i = str1->length, j = str2->length; i > 0 && j > 0; i--, j--){
         
         // first str
-        if (!isalpha(str1->stringArray[i]) && (str1->stringArray[i] != '\0')) { --i; ++j; continue; };
+        if (!isalpha(str1->string[i]) && (str1->string[i] != '\0')) { --i; ++j; continue; };
 
         // second str
-        if (!isalpha(str2->stringArray[j]) && (str2->stringArray[j] != '\0')) { ++i; --j; continue; };
+        if (!isalpha(str2->string[j]) && (str2->string[j] != '\0')) { ++i; --j; continue; };
 
         // if everithing is fine
-        if (tolower(str1->stringArray[i]) != tolower(str2->stringArray[j])){
+        if (tolower(str1->string[i]) != tolower(str2->string[j])){
             //printf("| %c %c %d\n", firstStr->stringArray[i], secondStr->stringArray[j], (firstStr->stringArray[i]) - tolower(secondStr->stringArray[j]));
-            return (tolower(str1->stringArray[i]) - tolower(str2->stringArray[j])) > 0 ? 1 : 0;
+            return (tolower(str1->string[i]) - tolower(str2->string[j])) > 0 ? 1 : 0;
         }
 
     }
